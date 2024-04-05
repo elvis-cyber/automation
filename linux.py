@@ -79,3 +79,5 @@ if __name__ == "__main__":
     dl_and_trans()
     nikto()
     hydra()
+    sqli()
+    xss()
